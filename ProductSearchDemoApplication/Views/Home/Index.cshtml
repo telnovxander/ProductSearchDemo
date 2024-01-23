@@ -1,0 +1,72 @@
+﻿@{
+    ViewData["Title"] = "Product search";
+}
+@model List<ProductViewModel> 
+
+<h2>Product Search</h2>
+
+<div id="searchContainer">
+    <div class="search-input-container">
+        <input type="text" id="searchInput" oninput="onSearchInput()" />
+        <button onclick="searchProducts()" class="searchButton">
+            <img src="~/Resources/search-icon.png" alt="Search Icon" class="search-icon" />
+        </button>
+    </div>
+</div>
+
+<div id="productsContainer" class="tiles-container">
+    @foreach (var product in Model)
+    {
+        <div class="tile">
+            <img src="@Url.Content(product.ImagePath)" alt="Product Image" class="tile-image" />
+            <p class="tile-name">@product.Description</p>
+        </div>
+    }
+</div>
+
+@section scripts {
+    <script>
+        var searchTimeout;
+
+        function onSearchInput() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(function () {
+                var searchString = document.getElementById("searchInput").value;
+                fetchProducts(searchString);
+            }, 2000);
+        }
+
+        function searchProducts() {
+            var searchString = document.getElementById("searchInput").value;
+            fetchProducts(searchString);
+        }
+
+        function fetchProducts(searchString) {
+            fetch('/Home/SearchProducts?searchString=' + encodeURIComponent(searchString))
+                .then(response => response.json())
+                .then(data => {
+                    var productsContainer = document.getElementById('productsContainer');
+                    productsContainer.innerHTML = ''; 
+
+                    data.forEach(product => {
+                        var productDiv = document.createElement('div');
+                        productDiv.className = 'tile';
+
+                        var img = document.createElement('img');
+                        img.src = product.imagePath;
+                        img.alt = 'Product Image';
+                        img.className = 'tile-image';
+
+                        var p = document.createElement('p');
+                        p.innerText = product.description;
+                        p.className = 'tile-name';
+
+                        productDiv.appendChild(img);
+                        productDiv.appendChild(p);
+
+                        productsContainer.appendChild(productDiv);
+                    });
+                });
+        }
+    </script>
+}
