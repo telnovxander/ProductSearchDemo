@@ -35,7 +35,7 @@ namespace ProductSearchDemoApplication.Controllers
         public IActionResult SearchProducts(string searchString)
         {
             var searchResults = _context.Products
-                .Where(p => string.IsNullOrEmpty(searchString) || p.Name.Contains(searchString))
+                .Where(p => string.IsNullOrEmpty(searchString) || p.Description.ToLower().Contains(searchString.ToLower()))
                 .Select(p => new ProductViewModel
                 {
                     Description = p.Description,

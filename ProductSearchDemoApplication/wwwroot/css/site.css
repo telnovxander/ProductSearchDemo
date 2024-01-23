@@ -122,7 +122,7 @@ body {
     margin-bottom: 20px;
     text-align: center;
     width: 200px;
-    box-sizing: border-box; /* Чтобы ширина включала в себя padding и border */
+    box-sizing: border-box; 
 }
 
 .tile-image {

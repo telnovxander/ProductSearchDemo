@@ -32,7 +32,7 @@ namespace ProductSearchDemoApplication
 
             var serviceProvider = services.BuildServiceProvider();
 
-            // Database initializatio
+            // Database initialization
             using (var scope = serviceProvider.CreateScope())
             {
                 var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
